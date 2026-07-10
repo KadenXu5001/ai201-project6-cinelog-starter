@@ -3,6 +3,7 @@
 ## AI Usage
 
 I used AI to help me understand the workflow of the app, and to extrapolate my comments and work into PR comment descriptions.
+For Comments 4 and 5, I also used AI as a "devil's advocate" by asking what counterargument a careful reviewer would raise and what tradeoff I might not be acknowledging. For Comment 5, the AI said that alphabetical sorting is easier for scanning a long list, even though I still chose date-added as the better default for a watchlist.
 
 <!-- Fill in at the end — how you used AI tools during this project -->
 
@@ -39,8 +40,11 @@ The tradeoff is privacy. A public default can expose a user's saved films unless
 ## Comment 5 — Sort order
 
 **My position:**
+I agree with the maintainer's preference and changed the watchlist default sort order to date-added, newest first.
 **Reasoning:**
+For a watchlist, recency usually represents the user's current intent better than alphabetical order. If someone saves a film today, it is likely more relevant to what they want to watch next than a film they saved months ago. Sorting by date-added also matches the behavior of get_collection(), which returns the newest entries first, so the two list-style features behave consistently.
 **Engagement with reviewer's point:**
+The maintainer's concern is valid because alphabetical order is useful for finding a known title, but it can hide the user's most recent decisions in the middle of the list. I think date-added is the better default for the first version because it makes the watchlist feel like a timeline of user intent. The tradeoff is that scanning a long watchlist by title is less convenient, so a future improvement could add an optional alphabetical sort in the UI without making it the default.
 
 ## Comment 6 — Rebase
 
