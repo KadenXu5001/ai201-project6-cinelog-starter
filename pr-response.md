@@ -2,6 +2,8 @@
 
 ## AI Usage
 
+I used AI to help me understand the workflow of the app, and to extrapolate my comments and work into PR comment descriptions.
+
 <!-- Fill in at the end — how you used AI tools during this project -->
 
 ## Comment 1 — Rename
@@ -28,8 +30,11 @@ Ran the watchlist test with pytest and confirmed test_add_to_watchlist_nonexiste
 ## Comment 4 — Default visibility
 
 **My position:**
+I am keeping watchlist entries public by default for this feature.
 **Reasoning:**
+The watchlist is part of a social film discovery experience, so making saved films visible by default supports browsing, sharing, and finding recommendations from other users. This matches the current WatchlistEntry model, where public defaults to True, and keeps the first version simple because users do not need to choose visibility every time they add a film.
 **Tradeoff acknowledged:**
+The tradeoff is privacy. A public default can expose a user's saved films unless the product also gives users a clear way to make entries private.
 
 ## Comment 5 — Sort order
 
