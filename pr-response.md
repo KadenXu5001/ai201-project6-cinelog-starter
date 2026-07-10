@@ -60,9 +60,9 @@ I ran git status and confirmed the rebase had completed with no unmerged paths. 
 
 ## Summary
 
-This PR adds the CineLog watchlist feature and addresses the maintainer review comments from the watchlist branch.
+This PR adds a watchlist feature to CineLog. Users can save films they want to watch later, view their saved watchlist, and get clear API errors when they try to add a missing film or add the same film twice.
 
-Users can now add films to a watchlist, view their saved films, and receive clear errors for missing films or duplicate watchlist entries. The branch was also rebased onto the updated main branch and updated to work with the UUID film ID refactor.
+The branch also addresses the maintainer review comments by renaming the watchlist add function, adding duplicate protection, adding missing-film test coverage, documenting the default visibility decision, changing the default sort order, and rebasing onto the updated main branch UUID film ID refactor.
 
 ## Changes
 
@@ -70,14 +70,14 @@ Users can now add films to a watchlist, view their saved films, and receive clea
 - Added deduplication logic so a user cannot add the same film to their watchlist more than once.
 - Added route error handling for missing films and duplicate watchlist entries.
 - Added tests/test_watchlist.py with coverage for adding a nonexistent film ID.
-- Kept watchlist entries public by default and documented the reasoning and privacy tradeoff.
-- Changed watchlist ordering to date-added, newest first, to better reflect recent user intent.
+- Kept watchlist entries public by default. This supports CineLog's social discovery goal by making saved films visible for browsing and recommendations, while acknowledging the privacy tradeoff.
+- Changed watchlist ordering to date-added, newest first. This prioritizes the films users saved most recently because those are the clearest signal of current watch intent.
 - Rebasing onto main restored compatibility with UUID film IDs and removed older integer film ID assumptions.
 - Confirmed the branch history is linear with no merge commits.
 
 ## Testing
 
-- Ran the watchlist test:
+- Automated test:
 
   pytest tests/test_watchlist.py -v
 
@@ -86,10 +86,21 @@ Users can now add films to a watchlist, view their saved films, and receive clea
 
   git log --oneline --merges origin/main..HEAD
 
+- Manual API checks for reviewer:
+- Start the Flask app locally.
+- Create or reuse a user ID and a valid film UUID from the database.
+- Send POST /watchlist/<user_id>/add with a valid film_id and confirm the response is 201 with the new watchlist entry.
+- Send GET /watchlist/<user_id> and confirm the saved film appears in the response.
+- Send the same POST /watchlist/<user_id>/add request again and confirm the response is 409 for the duplicate.
+- Send POST /watchlist/<user_id>/add with a nonexistent UUID-shaped film_id and confirm the response is 404.
+- Add multiple films and confirm GET /watchlist/<user_id> returns the newest saved entries first.
+
 ## Notes For Reviewer
 
 The watchlist defaults to public=True intentionally for the first version because CineLog is framed as a social film discovery app. The tradeoff is privacy, so a future improvement should expose a clear user-facing option to make watchlist entries private.
 
 The default watchlist sort is date-added, newest first. This prioritizes recently saved films as the best signal of current watch intent, while leaving alphabetical sorting as a possible future UI option for easier scanning.
+
+## Screenshot:
 
 ![alt text](image.png)
