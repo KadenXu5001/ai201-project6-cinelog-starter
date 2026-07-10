@@ -49,8 +49,11 @@ The maintainer's concern is valid because alphabetical order is useful for findi
 ## Comment 6 — Rebase
 
 **What conflicted:**
+The rebase conflicted in .gitignore because both main and my feature branch had added that file. After the rebase, the watchlist branch also needed to be brought in line with main's UUID refactor. Main now stores Film.id and film_id values as UUID strings, while my watchlist work still had some older integer film_id assumptions and the WatchlistEntry model was missing from the rebased models.py.
 **How I resolved it:**
+I resolved the .gitignore conflict by keeping the needed ignore rules and removing the conflict markers. I restored WatchlistEntry in models.py using UUID string foreign keys for film_id, added the watchlist relationships back to User and Film, updated the watchlist service and route documentation to describe film_id as a UUID, and changed the watchlist missing-film test to use a UUID-shaped fake film id instead of an integer.
 **How I verified no conflict remains:**
+I ran git status and confirmed the rebase had completed with no unmerged paths. I checked for merge commits with git log --oneline --merges origin/main..HEAD and confirmed it printed no merge commits. I also ran the watchlist test and confirmed test_add_to_watchlist_nonexistent_film_raises passed with the UUID-style fake film id.
 
 ## PR Description
 
