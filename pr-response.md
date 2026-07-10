@@ -14,7 +14,9 @@ Used a project-wide search for save_to_watchlist and add_to_watchlist to locate 
 ## Comment 2 — Deduplication
 
 **What I did:**
+Added deduplication logic to add_to_watchlist() in services/watchlist_service.py using the same pattern as add_to_collection(). The function now checks WatchlistEntry for an existing row with the same user_id and film_id before creating a new entry. If it finds one, it raises AlreadyInWatchlistError instead of creating a duplicate. I also updated routes/watchlist/watchlist.py to catch that error and return a 409 response, matching the collection route pattern.
 **How I verified:**
+Read add_to_collection() in services/collection_service.py and confirmed its deduplication check queries for an existing CollectionEntry with the same user_id and film_id, then raises AlreadyInCollectionError when a duplicate is detected. After writing the watchlist version, I searched for AlreadyInWatchlistError and add_to_watchlist to confirm the new exception is defined, raised, imported, and handled by the route.
 
 ## Comment 3 — Missing test
 
