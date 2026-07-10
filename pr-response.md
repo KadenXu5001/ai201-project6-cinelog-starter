@@ -3,9 +3,10 @@
 ## AI Usage
 
 I used AI to help me understand the workflow of the app, and to extrapolate my comments and work into PR comment descriptions.
+
 For Comments 4 and 5, I also used AI as a "devil's advocate" by asking what counterargument a careful reviewer would raise and what tradeoff I might not be acknowledging. For Comment 5, the AI said that alphabetical sorting is easier for scanning a long list, even though I still chose date-added as the better default for a watchlist.
 
-<!-- Fill in at the end — how you used AI tools during this project -->
+I also used it to help format and guide my pr creation
 
 ## Comment 1 — Rename
 
@@ -57,4 +58,38 @@ I ran git status and confirmed the rebase had completed with no unmerged paths. 
 
 ## PR Description
 
-<!-- Written at the end — feature overview, design decisions, manual testing steps -->
+## Summary
+
+This PR adds the CineLog watchlist feature and addresses the maintainer review comments from the watchlist branch.
+
+Users can now add films to a watchlist, view their saved films, and receive clear errors for missing films or duplicate watchlist entries. The branch was also rebased onto the updated main branch and updated to work with the UUID film ID refactor.
+
+## Changes
+
+- Renamed save_to_watchlist() to add_to_watchlist() and updated all call sites.
+- Added deduplication logic so a user cannot add the same film to their watchlist more than once.
+- Added route error handling for missing films and duplicate watchlist entries.
+- Added tests/test_watchlist.py with coverage for adding a nonexistent film ID.
+- Kept watchlist entries public by default and documented the reasoning and privacy tradeoff.
+- Changed watchlist ordering to date-added, newest first, to better reflect recent user intent.
+- Rebasing onto main restored compatibility with UUID film IDs and removed older integer film ID assumptions.
+- Confirmed the branch history is linear with no merge commits.
+
+## Testing
+
+- Ran the watchlist test:
+
+  pytest tests/test_watchlist.py -v
+
+- Confirmed test_add_to_watchlist_nonexistent_film_raises passes.
+- Verified the branch history has no merge commits with:
+
+  git log --oneline --merges origin/main..HEAD
+
+## Notes For Reviewer
+
+The watchlist defaults to public=True intentionally for the first version because CineLog is framed as a social film discovery app. The tradeoff is privacy, so a future improvement should expose a clear user-facing option to make watchlist entries private.
+
+The default watchlist sort is date-added, newest first. This prioritizes recently saved films as the best signal of current watch intent, while leaving alphabetical sorting as a possible future UI option for easier scanning.
+
+![alt text](image.png)
