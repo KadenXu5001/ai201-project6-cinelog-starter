@@ -21,7 +21,9 @@ Read add_to_collection() in services/collection_service.py and confirmed its ded
 ## Comment 3 — Missing test
 
 **What I did:**
+Created tests/test_watchlist.py and added test_add_to_watchlist_nonexistent_film_raises. The test follows the same fixture and assertion structure as test_add_to_collection_nonexistent_film_raises in tests/test_collection.py. It creates an in-memory test app, creates a sample user, uses a fake film id that does not exist, and checks that add_to_watchlist() raises FilmNotFoundError instead of creating a database error.
 **How I verified:**
+Ran the watchlist test with pytest and confirmed test_add_to_watchlist_nonexistent_film_raises passed. The plain pytest launcher in this local environment points to a missing Python executable, so I ran the same test through python -m pytest with the project virtual environment packages on PYTHONPATH.
 
 ## Comment 4 — Default visibility
 
